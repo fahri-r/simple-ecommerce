@@ -1,0 +1,84 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table user {
+  id integer [primary key]
+  username varchar
+  email varchar
+  password text
+  role varchar
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}
+
+Table profile {
+  id integer [primary key]
+  user_id integer
+  first_name varchar
+  last_name varchar
+  address text
+  city varchar
+  postal_code varchar
+  phone varchar
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}
+
+Table cart {
+  id integer [primary key]
+  product_id integer
+  profile_id integer
+  quantity varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table product {
+  id integer [primary key]
+  name varchar
+  description text
+  stock integer
+  price integer
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}
+
+Table order_detail {
+  id integer [primary key]
+  order_id integer
+  product_id integer
+  quantity integer
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table order {
+  id integer [primary key]
+  profile_id integer
+  payment_id integer
+  price_total integer
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}
+
+Table payment {
+  id integer [primary key]
+  amount integer
+  provider varchar
+  paid_status boolean
+  created_at timestamp
+  updated_at timestamp
+}
+
+Ref: profile.user_id - user.id 
+Ref: cart.profile_id > profile.id
+Ref: cart.profile_id > product.id
+Ref: order_detail.product_id > product.id
+Ref: order_detail.order_id > order.id
+Ref: order.profile_id < profile.id
+Ref: order.payment_id - payment.id
+
