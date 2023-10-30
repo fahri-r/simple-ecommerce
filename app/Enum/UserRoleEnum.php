@@ -5,6 +5,6 @@ namespace App\Enum;
 
 enum UserRoleEnum: string
 {
-    case BUYER = 'buyer';
-    case SELLER = 'seller';
+    case ADMIN = 'admin';
+    case USER = 'user';
 }

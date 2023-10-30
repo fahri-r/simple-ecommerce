@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('profile_id')->references('id')->on('profile');
+            $table->foreign('product_id')->references('id')->on('product');
         });
     }
 
