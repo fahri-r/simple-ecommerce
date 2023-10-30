@@ -16,10 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('first_name');
             $table->string('last_name');
-            $table->text('address');
-            $table->string('city');
-            $table->string('postal_code');
-            $table->string('phone');
+            $table->text('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('phone')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

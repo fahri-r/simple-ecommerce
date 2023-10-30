@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\File;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,10 +18,11 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'name' => fake()->sentence(),
             'description' => fake()->text(),
             'stock' => fake()->randomNumber(3),
             'price' => fake()->numberBetween(1000, 200000),
+            'image_id' => File::factory()->create()->id,
         ];
     }
 }

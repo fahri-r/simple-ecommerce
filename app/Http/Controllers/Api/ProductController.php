@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
+use App\Models\File;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use stdClass;
@@ -33,7 +34,24 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
 
-        $data = Product::create($validated);
+        if ($request->has('file')) {
+            $file = $request->file('file')->storeOnCloudinary();
+
+            $file_result = File::create([
+                'url' => $file->getSecurePath(),
+                'name' => $file->getOriginalFileName(),
+                'type' => $file->getFileType(),
+                'size' => $file->getSize(),
+            ]);
+        }
+
+        $data = Product::create([
+            'name' => $validated->name,
+            'description' => $validated->description,
+            'stock' => $validated->stock,
+            'price' => $validated->price,
+            'image_id' => $file_result->file_id,
+        ]);
 
         return response()->json([
             "success" => true,
@@ -78,10 +96,22 @@ class ProductController extends Controller
         $validated = $request->validated();
         $validated = $request->safe();
 
+        if ($request->has('file')) {
+            $file = $request->file('file')->storeOnCloudinary();
+
+            $file_result = File::create([
+                'url' => $file->getSecurePath(),
+                'name' => $file->getOriginalFileName(),
+                'type' => $file->getFileType(),
+                'size' => $file->getSize(),
+            ]);
+        }
+
         $data->name = $validated->name;
         $data->description = $validated->description;
         $data->stock = $validated->stock;
         $data->price = $validated->price;
+        $data->image_id = $file_result->file_id ?? $data->image_id;
         $data->save();
 
         return response()->json([
