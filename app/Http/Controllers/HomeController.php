@@ -13,6 +13,6 @@ class HomeController extends Controller
         $response = Route::dispatch($request);
         $data = json_decode($response->getContent(), true);
 
-        return view('home', ["products" => $data['data']]);
+        return view('sections.home.index', ["products" => $data['data']]);
     }
 }
