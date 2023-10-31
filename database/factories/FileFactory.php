@@ -17,10 +17,10 @@ class FileFactory extends Factory
     public function definition(): array
     {
         return [
-            'url' => 'tes',
-            'name' => 'tes',
-            'type' => 'tes',
-            'size' => 123,
+            'url' => 'https://res.cloudinary.com/dr1ohfvxn/image/upload/v1698753039/erhjsvj7g16iebcqubxd.jpg',
+            'name' => 'php6206',
+            'type' => 'image',
+            'size' => 714429,
         ];
     }
 }

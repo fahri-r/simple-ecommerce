@@ -33,9 +33,18 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         $validated = $request->validated();
+        $validated = $request->safe();
 
-        if ($request->has('file')) {
-            $file = $request->file('file')->storeOnCloudinary();
+
+        $data = Product::create([
+            'name' => $validated->name,
+            'description' => $validated->description,
+            'stock' => $validated->stock,
+            'price' => $validated->price,
+        ]);
+
+        if ($request->has('image')) {
+            $file = $request->file('image')->storeOnCloudinary();
 
             $file_result = File::create([
                 'url' => $file->getSecurePath(),
@@ -43,15 +52,9 @@ class ProductController extends Controller
                 'type' => $file->getFileType(),
                 'size' => $file->getSize(),
             ]);
+            $data->image()->associate($file_result);
+            $data->save();
         }
-
-        $data = Product::create([
-            'name' => $validated->name,
-            'description' => $validated->description,
-            'stock' => $validated->stock,
-            'price' => $validated->price,
-            'image_id' => $file_result->file_id,
-        ]);
 
         return response()->json([
             "success" => true,
@@ -96,8 +99,8 @@ class ProductController extends Controller
         $validated = $request->validated();
         $validated = $request->safe();
 
-        if ($request->has('file')) {
-            $file = $request->file('file')->storeOnCloudinary();
+        if ($request->has('image')) {
+            $file = $request->file('image')->storeOnCloudinary();
 
             $file_result = File::create([
                 'url' => $file->getSecurePath(),
@@ -105,8 +108,10 @@ class ProductController extends Controller
                 'type' => $file->getFileType(),
                 'size' => $file->getSize(),
             ]);
+            $data->image()->associate($file_result);
+            $data->save();
         }
-
+        
         $data->name = $validated->name;
         $data->description = $validated->description;
         $data->stock = $validated->stock;

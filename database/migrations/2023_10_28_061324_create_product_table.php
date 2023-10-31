@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('product', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('image_id');
+            $table->unsignedBigInteger('image_id')->nullable();
             $table->string('name');
             $table->text('description');
             $table->integer('stock');
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps(); 
             $table->softDeletes();
 
-            $table->foreign('image_id')->references('id')->on('file');
+            $table->foreign('image_id')->references('id')->on('file')->onDelete('SET NULL');
         });
     }
 
