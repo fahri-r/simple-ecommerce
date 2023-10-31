@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Payment extends Model
 {
     use HasFactory;
+    
+    protected $table = 'payment';
 
     protected $fillable = [
         'amount',

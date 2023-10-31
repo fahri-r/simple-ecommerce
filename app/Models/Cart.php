@@ -27,4 +27,9 @@ class Cart extends Model
     {
         return $this->belongsTo(Profile::class, 'profile_id', 'id');
     }
+
+    public function price()
+    {
+        return $this->product->price * $this->quantity;
+    }
 }

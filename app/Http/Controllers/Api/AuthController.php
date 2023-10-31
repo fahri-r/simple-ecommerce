@@ -37,6 +37,8 @@ class AuthController extends Controller
     public function login(LoginUserRequest $request)
     {
         $validated = $request->validated();
+        $validated = $request->safe();
+        
         $data = [
             'email' => $validated->email,
             'password' => $validated->password

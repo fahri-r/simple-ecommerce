@@ -11,6 +11,8 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $table = 'order';
+    
     protected $fillable = [
         'profile_id',
         'payment_id',
@@ -29,6 +31,6 @@ class Order extends Model
 
     public function buyer(): BelongsTo
     {
-        return $this->belongsTo(OrderDetail::class, 'profile_id', 'id');
+        return $this->belongsTo(Profile::class, 'profile_id', 'id');
     }
 }
