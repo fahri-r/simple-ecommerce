@@ -11,12 +11,22 @@ class HomeController extends Controller
     public function index()
     {
         $request = Request::create('/api/products', 'GET', [
-            'random' => false,
-            'per_page' => 2
+            'per_page' => 8
         ]);
         $res = app()->handle($request);
-        $data = json_decode($res->getContent());
+        $products = json_decode($res->getContent());
 
-        return view('sections.home.index', ["products" => $data->data]);
+
+        $request = Request::create('/api/products', 'GET', [
+            'per_page' => 8,
+            'random' => true
+        ]);
+        $res = app()->handle($request);
+        $random_products = json_decode($res->getContent());
+
+        return view('sections.home.index', [
+            "products" => $products,
+            "random_products" => $random_products
+        ]);
     }
 }

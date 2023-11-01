@@ -8,7 +8,13 @@ class ProductController extends Controller
 {
     public function index()
     {
-        return view('sections.products.index');
+        $request = Request::create('/api/products', 'GET');
+        $res = app()->handle($request);
+        $products = json_decode($res->getContent());
+
+        return view('sections.products.index', [
+            "products" => $products,
+        ]);
     }
 
     public function show($id)

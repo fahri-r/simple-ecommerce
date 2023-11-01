@@ -6,13 +6,26 @@
             <p class="text-gray-600 mb-6 text-sm">
                 Register for new cosutumer
             </p>
-            <form action="#" method="post" autocomplete="off">
+            <form action="{{ route('register.store') }}" method="post" autocomplete="off">
+                @csrf
                 <div class="space-y-2">
                     <div>
-                        <label for="name" class="text-gray-600 mb-2 block">Full Name</label>
-                        <input type="text" name="name" id="name"
+                        <label for="name" class="text-gray-600 mb-2 block">Username</label>
+                        <input type="text" name="username" id="username"
+                            class="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
+                            placeholder="fulan">
+                    </div>
+                    <div>
+                        <label for="name" class="text-gray-600 mb-2 block">First Name</label>
+                        <input type="text" name="first_name" id="first_name"
                             class="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
                             placeholder="fulan fulana">
+                    </div>
+                    <div>
+                        <label for="name" class="text-gray-600 mb-2 block">Last Name</label>
+                        <input type="text" name="last_name" id="last_name"
+                            class="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
+                            placeholder="fulana">
                     </div>
                     <div>
                         <label for="email" class="text-gray-600 mb-2 block">Email address</label>
@@ -25,20 +38,6 @@
                         <input type="password" name="password" id="password"
                             class="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
                             placeholder="*******">
-                    </div>
-                    <div>
-                        <label for="confirm" class="text-gray-600 mb-2 block">Confirm password</label>
-                        <input type="password" name="confirm" id="confirm"
-                            class="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
-                            placeholder="*******">
-                    </div>
-                </div>
-                <div class="mt-6">
-                    <div class="flex items-center">
-                        <input type="checkbox" name="aggrement" id="aggrement"
-                            class="text-primary focus:ring-0 rounded-sm cursor-pointer">
-                        <label for="aggrement" class="text-gray-600 ml-3 cursor-pointer">I have read and agree to the <a
-                                href="#" class="text-primary">terms & conditions</a></label>
                     </div>
                 </div>
                 <div class="mt-4">
@@ -66,3 +65,23 @@
         </div>
     </div>
 @endsection
+
+
+{{-- @section('script')
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            axios.post('{{ route('auth.register') }}', formData)
+                .then(response => {
+                    localStorage.setItem("token", response.data.token);
+                    window.location.href = "home.index"
+                })
+                .catch(error => {
+                    console.error(error);
+                    
+                });
+        });
+    </script>
+@endsection --}}

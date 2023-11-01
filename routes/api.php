@@ -29,8 +29,10 @@ Route::apiResource('profile.carts', CartController::class);
 Route::apiResource('profile.orders', OrderController::class);
 Route::apiResource('profile.orders.payments', PaymentController::class);
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [AuthController::class, 'register'])->name("auth.register");
+    Route::post('/login', [AuthController::class, 'login'])->name("auth.login");
+});
 
 Route::middleware('auth:api')->group(function () {
     Route::get('profile', [ProfileController::class, 'index']);

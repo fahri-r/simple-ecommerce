@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enum\UserRoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
@@ -19,7 +20,7 @@ class AuthController extends Controller
             'username' => $validated->username,
             'email' => $validated->email,
             'password' => bcrypt($validated->password),
-            'role' => $validated->role,
+            'role' => $validated->role ?? UserRoleEnum::USER,
         ]);
 
         $profile = Profile::create([
@@ -48,7 +49,7 @@ class AuthController extends Controller
             $token = auth()->user()->createToken('Laravel-9-Passport-Auth')->accessToken;
             return response()->json(['token' => $token], 200);
         } else {
-            return response()->json(['error' => 'Unauthorised'], 401);
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
 }

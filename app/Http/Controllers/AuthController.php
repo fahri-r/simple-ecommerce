@@ -15,4 +15,8 @@ class AuthController extends Controller
     {
         return view('sections.auth.register');
     }
+
+    public function createUser (Request $request) {
+        dd($request);
+    }
 }

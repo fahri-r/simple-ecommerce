@@ -17,7 +17,14 @@ class ProductController extends Controller
     {
         $page = $request->has('page') ? $request->input('page') : 1;
         $per_page = $request->has('per_page') ? (int) $request->input('per_page') : 10;
-        $data = Product::paginate($per_page, ['*'], 'page', $page);
+        $data = new Product();
+
+        if($request->has('random') && $request->input('random') == true) {
+            $data = $data->inRandomOrder()->paginate($per_page, ['*'], 'page', $page);
+        } else {
+            $data = $data->paginate($per_page, ['*'], 'page', $page);
+        }
+
         $return_data = ProductResource::collection($data->items());
 
         return response()->json([

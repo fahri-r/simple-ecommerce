@@ -19,13 +19,15 @@
 
     @vite('../../node_modules/@fortawesome/fontawesome-free/css/all.min.css')
     @vite('resources/css/app.css')
-    @vite('resources/css/main.css')
+    {{-- @vite('resources/css/main.css') --}}
+    @vite("resources/js/app.js")
 </head>
 
 <body>
 
     @yield('content')
 
+    @yield('script')
 </body>
 
 </html>
