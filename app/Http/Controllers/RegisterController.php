@@ -28,8 +28,9 @@ class RegisterController extends Controller
         $response = Route::dispatch($request);
         $response_body = json_decode($response->getContent(), true);
 
-        return redirect()->route('home.index')->with([
-            'token' => $response_body
-        ]);
+        return redirect()->route('home.index')->with(
+            'token',
+            $response_body['token']
+        );
     }
 }

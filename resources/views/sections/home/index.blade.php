@@ -193,8 +193,15 @@
             @endforeach
         </div>
     </div>
-    @if (Session::has('token'))
-        {{-- {{ dd(Session::get('token')[0]) }} --}}
-    @endif
     <!-- ./product -->
+@endsection
+
+
+@section('script')
+    @if (Session::has('token'))
+        <script>
+            var token = '{!! Session::get('token') !!}';
+            localStorage.setItem("token", token);
+        </script>
+    @endif
 @endsection
