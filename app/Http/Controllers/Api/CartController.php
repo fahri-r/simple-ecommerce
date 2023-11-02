@@ -52,6 +52,7 @@ class CartController extends Controller
         }
 
         $validated = $request->validated();
+        $validated = $request->safe();
 
         $data = Cart::create([
             'profile_id' => $profile_data->id,

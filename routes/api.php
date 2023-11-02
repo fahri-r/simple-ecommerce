@@ -25,7 +25,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('products', ProductController::class);
-Route::apiResource('profile.carts', CartController::class);
 Route::apiResource('profile.orders', OrderController::class);
 Route::apiResource('profile.orders.payments', PaymentController::class);
 
@@ -36,4 +35,5 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:api')->group(function () {
     Route::get('profile', [ProfileController::class, 'index']);
+    Route::apiResource('profile.carts', CartController::class);
 });

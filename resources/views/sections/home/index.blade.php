@@ -125,9 +125,14 @@
                             <div class="text-xs text-gray-500 ml-3">(150)</div>
                         </div>
                     </div>
-                    <a href="#"
-                        class="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition">Add
-                        to cart</a>
+                    <form action="/carts" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value={{ $p->id }}>
+                        <button type="submit"
+                            class="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition">Add
+                            to cart
+                        </button>
+                    </form>
                 </div>
             @endforeach
         </div>
@@ -186,9 +191,10 @@
                             <div class="text-xs text-gray-500 ml-3">(150)</div>
                         </div>
                     </div>
-                    <a href="#"
+                    <button type="submit" onclick="storeCart({{ $p->id }})"
                         class="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition">Add
-                        to cart</a>
+                        to cart
+                    </button>
                 </div>
             @endforeach
         </div>
@@ -196,12 +202,24 @@
     <!-- ./product -->
 @endsection
 
-
 @section('script')
-    @if (Session::has('token'))
-        <script>
-            var token = '{!! Session::get('token') !!}';
-            localStorage.setItem("token", token);
-        </script>
-    @endif
+    <script>
+        const username = getCookie('username');
+        const token = `Bearer ${getCookie('token')}`
+        const config = {
+            'headers': {
+                'Authorization': token,
+            }
+        }
+
+        function storeCart(id) {
+            axios.post(`/api/profile/${username}/carts`, {
+                    'product_id': id,
+                    'quantity': 1
+                }, config)
+                .then((response) => {
+                    console.log(response);
+                })
+        };
+    </script>
 @endsection

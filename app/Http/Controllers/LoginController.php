@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Enum\UserRoleEnum;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
-class RegisterController extends Controller
+class LoginController extends Controller
 {
     public function index()
     {
-        return view('sections.auth.register');
+        return view('sections.auth.login');
     }
 
     public function store(Request $request)
@@ -21,17 +18,15 @@ class RegisterController extends Controller
         $body = [
             'username' => $request->username,
             'email' => $request->email,
-            'password' => $request->password,
-            'role' => $request->role ?? UserRoleEnum::USER,
         ];
-        $request = Request::create('/api/auth/register', 'POST', $body);
+        $request = Request::create('/api/auth/login', 'POST', $body);
         $response = Route::dispatch($request);
         $response_body = json_decode($response->getContent(), true);
 
         return redirect()->route('home.index')
             ->withCookies([
-                'token' => cookie('token', $response_body['token'], 30),
-                'username' => cookie('username', $response_body['user']['username'], 30)
+                'token' => cookie('token', $response_body['token'], 30, null, null, null, false),
+                'username' => cookie('username', $response_body['user']['username'], 30, null, null, null, false)
             ]);
     }
 }

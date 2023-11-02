@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
@@ -21,7 +22,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/profile', [ProfileController::class, 'index']);
-Route::get('/checkout', [CheckoutController::class, 'index']);
 Route::resource('products', ProductController::class)->only(['index', 'show']);
-Route::get('/login', [AuthController::class, 'login']);
+Route::resource('carts', CartController::class)->only(['index']);
+Route::resource('orders', OrderController::class)->only(['index']);
+Route::resource('login', LoginController::class)->only(['index', 'store']);
 Route::resource('register', RegisterController::class)->only(['index', 'store']);
