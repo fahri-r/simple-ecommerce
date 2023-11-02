@@ -10,14 +10,14 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $request = Request::create('/api/products', 'GET', [
+        $request = Request::create('/api/v1/products', 'GET', [
             'per_page' => 8
         ]);
         $res = app()->handle($request);
         $products = json_decode($res->getContent());
 
 
-        $request = Request::create('/api/products', 'GET', [
+        $request = Request::create('/api/v1/products', 'GET', [
             'per_page' => 8,
             'random' => true
         ]);

@@ -19,7 +19,7 @@ class LoginController extends Controller
             'username' => $request->username,
             'email' => $request->email,
         ];
-        $request = Request::create('/api/auth/login', 'POST', $body);
+        $request = Request::create('/api/v1/auth/login', 'POST', $body);
         $response = Route::dispatch($request);
         $response_body = json_decode($response->getContent(), true);
 

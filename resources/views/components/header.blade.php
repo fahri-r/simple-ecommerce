@@ -1,7 +1,7 @@
 <header class="py-4 shadow-sm bg-white">
     <div class="container flex items-center justify-between">
         <a href="index.html">
-            <img src="assets/images/logo.svg" alt="Logo" class="w-32">
+            <img src="{{ asset('assets/images/logo.svg') }}" alt="Logo" class="w-32">
         </a>
 
         <div class="w-full max-w-xl relative flex">
@@ -16,7 +16,8 @@
         </div>
 
         <div class="flex items-center space-x-4">
-            <a href="#" class="text-center text-gray-700 hover:text-primary transition relative">
+            <a href="{{ route('carts.index') }}"
+                class="text-center text-gray-700 hover:text-primary transition relative">
                 <div class="text-2xl">
                     <i class="fa-solid fa-bag-shopping"></i>
                 </div>
@@ -25,11 +26,12 @@
                     class="absolute -right-3 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">
                     2</div> --}}
             </a>
-            <a href="/carts" class="text-center text-gray-700 hover:text-primary transition relative">
+            <a href="{{ route('profile.index') }}"
+                class="text-center text-gray-700 hover:text-primary transition relative">
                 <div class="text-2xl">
                     <i class="fa-regular fa-user"></i>
                 </div>
-                <div class="text-xs leading-3">Account</div>
+                <div class="text-xs leading-3" id="account">Account</div>
             </a>
         </div>
     </div>

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('content')
     <div class="container py-4 flex items-center gap-3">
-        <a href="../index.html" class="text-primary text-base">
+        <a href="{{ route('home.index') }}" class="text-primary text-base">
             <i class="fa-solid fa-house"></i>
         </a>
         <span class="text-sm text-gray-400">
@@ -112,16 +112,16 @@
 @section('script')
     <script>
         let username = getCookie('username');
-        let token = `Bearer ${getCookie('token')}`
+        let token = `Bearer ${getCookie('token')}`;
         let config = {
             'headers': {
                 'Authorization': token,
             }
-        }
+        };
 
         function updateQuantity(id, product_id) {
             let qty = document.getElementById(`quantity-${id}`).value;
-            axios.put(`/api/profile/${username}/carts/${id}`, {
+            axios.put(`/api/v1/profile/${username}/carts/${id}`, {
                     'product_id': product_id,
                     'quantity': qty
                 }, config)
@@ -129,14 +129,17 @@
                     console.log(response);
                     let total_price = response.data.data.quantity * response.data.data.product.price;
                     document.getElementById(`total-item-price-${id}`).innerHTML = `$${total_price}`;
-                })
+                });
         };
 
         function storeOrder() {
-            axios.post(`/api/profile/${username}/orders`, config = config)
+            axios.post(`/api/v1/profile/${username}/orders`, {}, config)
                 .then((response) => {
                     console.log(response);
                 })
+                .catch((err) => {
+                    window.location.href = "{{ route('login.index') }}"\;
+                });
         };
     </script>
 @endsection

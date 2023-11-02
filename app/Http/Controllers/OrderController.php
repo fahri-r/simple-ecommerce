@@ -10,12 +10,24 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $details = ['title' => 'test'];
-        $pdf = Pdf::loadView('sections.orders.index', $details)->setOptions(['defaultFont' => 'sans-serif']);
-        return $pdf->download('invoice.pdf');
-        // return view('sections.orders.index');
+        $username = $request->cookie('username');
+        $token = "Bearer {$request->cookie('token')}";
+
+        $r = Request::create("/api/v1/profile/{$username}/orders", 'GET');
+        $r->headers->add(['Authorization' => $token]);
+
+        $res = app()->handle($r);
+        $orders = json_decode($res->getContent());
+
+
+        // $details = ['title' => 'test'];
+        // $pdf = Pdf::loadView('sections.orders.index', $details)->setOptions(['defaultFont' => 'sans-serif']);
+        // return $pdf->download('invoice.pdf');
+        return view('sections.orders.index', [
+            'orders' => $orders
+        ]);
     }
 
     /**

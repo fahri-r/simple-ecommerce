@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::prefix('v1')->group(function () {
+Route::prefix('v1')->as('api.')->group(function () {
 
     Route::prefix('auth')->group(function () {
         Route::post('/register', [AuthController::class, 'register'])->name("auth.register");
@@ -34,15 +34,15 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('products', ProductController::class)->only(['index', 'show']);
 
     Route::middleware('auth:api')->group(function () {
-        Route::apiResource('profile.orders', OrderController::class)->only(['index', 'show']);
+        Route::apiResource('profile.orders', OrderController::class)->only(['index', 'show', 'store']);
         Route::apiResource('profile.orders.payments', PaymentController::class)->only(['index', 'show', 'update']);
 
-        Route::get('profile', [ProfileController::class, 'index'])->only(['index', 'show', 'update', 'destroy']);
+        Route::resource('profile', ProfileController::class)->only(['index', 'show', 'update', 'destroy']);
         Route::apiResource('profile.carts', CartController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
 
         Route::middleware('role:admin')->group(function () {
             Route::apiResource('products', ProductController::class)->only(['store', 'update', 'destroy']);
-            Route::apiResource('profile.orders', OrderController::class)->only(['store', 'update', 'destroy']);
+            Route::apiResource('profile.orders', OrderController::class)->only(['update', 'destroy']);
             Route::apiResource('profile.orders.payments', PaymentController::class)->only(['destroy']);
         });
     });

@@ -15,13 +15,13 @@ class CartController extends Controller
         $username = $request->cookie('username');
         $token = "Bearer {$request->cookie('token')}";
         
-        $r = Request::create("/api/profile/", 'GET');
+        $r = Request::create("/api/v1/profile/", 'GET');
         $r->headers->add(['Authorization' => $token]);
 
         $res = app()->handle($r);
         $profile = json_decode($res->getContent());
 
-        $r = Request::create("/api/profile/{$username}/carts", 'GET');
+        $r = Request::create("/api/v1/profile/{$username}/carts", 'GET');
         $r->headers->add(['Authorization' => $token]);
 
         $res = app()->handle($r);

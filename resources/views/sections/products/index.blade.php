@@ -2,7 +2,7 @@
 @section('content')
     <!-- breadcrumb -->
     <div class="container py-4 flex items-center gap-3">
-        <a href="../index.html" class="text-primary text-base">
+        <a href="{{ route('home.index') }}" class="text-primary text-base">
             <i class="fa-solid fa-house"></i>
         </a>
         <span class="text-sm text-gray-400">
@@ -42,7 +42,7 @@
                 @foreach ($products->data as $p)
                     <div class="bg-white shadow rounded overflow-hidden group">
                         <div class="relative">
-                            <img src="{{ isset($p->image) ? $p->image->url : url('/assets/images/product-placeholder.png') }}"
+                            <img src="{{ isset($p->image) ? $p->image->url : asset('/assets/images/product-placeholder.png') }}"
                                 alt="{{ isset($p->image) ? $p->image->name : 'Product' }}" class="w-full">
                             <div
                                 class="absolute inset-0 bg-black bg-opacity-40 flex items-center 

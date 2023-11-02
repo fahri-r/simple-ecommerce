@@ -38,10 +38,10 @@
 
         <div class="flex items-center justify-between flex-grow py-5">
             <div class="flex items-center space-x-6 capitalize">
-                <a href="/" class="text-gray-200 hover:text-white transition">Home</a>
-                <a href="/products" class="text-gray-200 hover:text-white transition">Shop</a>
-                <a href="#" class="text-gray-200 hover:text-white transition">About us</a>
-                <a href="#" class="text-gray-200 hover:text-white transition">Contact us</a>
+                <a href="{{ route('home.index') }}" class="text-gray-200 hover:text-white transition">Home</a>
+                <a href="{{ route('products.index') }}" class="text-gray-200 hover:text-white transition">Shop</a>
+                {{-- <a href="#" class="text-gray-200 hover:text-white transition">About us</a>
+                <a href="#" class="text-gray-200 hover:text-white transition">Contact us</a> --}}
             </div>
             {{-- <a href="pages/login.html" class="text-gray-200 hover:text-white transition">Login</a> --}}
         </div>

@@ -24,14 +24,14 @@ class RegisterController extends Controller
             'password' => $request->password,
             'role' => $request->role ?? UserRoleEnum::USER,
         ];
-        $request = Request::create('/api/auth/register', 'POST', $body);
+        $request = Request::create('/api/v1/auth/register', 'POST', $body);
         $response = Route::dispatch($request);
         $response_body = json_decode($response->getContent(), true);
 
         return redirect()->route('home.index')
             ->withCookies([
-                'token' => cookie('token', $response_body['token'], 30),
-                'username' => cookie('username', $response_body['user']['username'], 30)
+                'token' => cookie('token', $response_body['token'], 30, null, null, null, false),
+                'username' => cookie('username', $response_body['user']['username'], 30, null, null, null, false)
             ]);
     }
 }

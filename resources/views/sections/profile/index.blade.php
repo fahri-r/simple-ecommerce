@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('content')
     <div class="container py-4 flex items-center gap-3">
-        <a href="../index.html" class="text-primary text-base">
+        <a href="{{ route('home.index') }}" class="text-primary text-base">
             <i class="fa-solid fa-house"></i>
         </a>
         <span class="text-sm text-gray-400">
@@ -18,24 +18,26 @@
         <div class="col-span-3">
             <div class="px-4 py-3 shadow flex items-center gap-4">
                 <div class="flex-shrink-0">
-                    <img src="../assets/images/avatar.png" alt="profile"
+                    <img src="{{ asset('/assets/images/avatar.png') }}" alt="profile"
                         class="rounded-full w-14 h-14 border border-gray-200 p-1 object-cover">
                 </div>
                 <div class="flex-grow">
                     <p class="text-gray-600">Hello,</p>
-                    <h4 class="text-gray-800 font-medium">John Doe</h4>
+                    <h4 class="text-gray-800 font-medium">{{ $profile->data->first_name }} {{ $profile->data->last_name }}
+                    </h4>
                 </div>
             </div>
 
             <div class="mt-6 bg-white shadow rounded p-4 divide-y divide-gray-200 space-y-4 text-gray-600">
                 <div class="space-y-1 pl-8">
-                    <a href="#" class="relative text-primary block font-medium capitalize transition">
+                    <a href="{{ route('profile.index') }}"
+                        class="relative text-primary block font-medium capitalize transition">
                         <span class="absolute -left-8 top-0 text-base">
                             <i class="fa-regular fa-address-card"></i>
                         </span>
                         Manage account
                     </a>
-                    <a href="#" class="relative hover:text-primary block capitalize transition">
+                    {{-- <a href="#" class="relative hover:text-primary block capitalize transition">
                         Profile information
                     </a>
                     <a href="#" class="relative hover:text-primary block capitalize transition">
@@ -43,17 +45,18 @@
                     </a>
                     <a href="#" class="relative hover:text-primary block capitalize transition">
                         Change password
-                    </a>
+                    </a> --}}
                 </div>
 
                 <div class="space-y-1 pl-8 pt-4">
-                    <a href="#" class="relative hover:text-primary block font-medium capitalize transition">
+                    <a href="{{ route('profile.orders.index', $profile->data->user->username) }}" id="order-history"
+                        class="relative hover:text-primary block font-medium capitalize transition">
                         <span class="absolute -left-8 top-0 text-base">
                             <i class="fa-solid fa-box-archive"></i>
                         </span>
                         My order history
                     </a>
-                    <a href="#" class="relative hover:text-primary block capitalize transition">
+                    {{-- <a href="#" class="relative hover:text-primary block capitalize transition">
                         My returns
                     </a>
                     <a href="#" class="relative hover:text-primary block capitalize transition">
@@ -61,10 +64,10 @@
                     </a>
                     <a href="#" class="relative hover:text-primary block capitalize transition">
                         My reviews
-                    </a>
+                    </a> --}}
                 </div>
 
-                <div class="space-y-1 pl-8 pt-4">
+                {{-- <div class="space-y-1 pl-8 pt-4">
                     <a href="#" class="relative hover:text-primary block font-medium capitalize transition">
                         <span class="absolute -left-8 top-0 text-base">
                             <i class="fa-regular fa-credit-card"></i>
@@ -83,7 +86,7 @@
                         </span>
                         My wishlist
                     </a>
-                </div>
+                </div> --}}
 
                 <div class="space-y-1 pl-8 pt-4">
                     <a href="#" class="relative hover:text-primary block font-medium capitalize transition">
@@ -99,43 +102,45 @@
         <!-- ./sidebar -->
 
         <!-- info -->
-        <div class="col-span-9 grid grid-cols-3 gap-4">
 
-            <div class="shadow rounded bg-white px-4 pt-6 pb-8">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-medium text-gray-800 text-lg">Personal Profile</h3>
-                    <a href="#" class="text-primary">Edit</a>
+        <div class="col-span-9 border border-gray-200 p-4 rounded">
+            <h3 class="text-lg font-medium capitalize mb-4">My Profile</h3>
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="first_name" class="text-gray-600">First Name <span class="text-primary">*</span></label>
+                        <input type="text" name="first_name" id="first_name" class="input-box"
+                            value="{{ $profile->data->first_name ?? '' }}">
+                    </div>
+                    <div>
+                        <label for="last_name" class="text-gray-600">Last Name <span class="text-primary">*</span></label>
+                        <input type="text" name="last_name" id="last_name" class="input-box"
+                            value="{{ $profile->data->last_name ?? '' }}">
+                    </div>
                 </div>
-                <div class="space-y-1">
-                    <h4 class="text-gray-700 font-medium">John Doe</h4>
-                    <p class="text-gray-800">example@mail.com</p>
-                    <p class="text-gray-800">0811 8877 988</p>
+                <div>
+                    <label for="address" class="text-gray-600">Address</label>
+                    <textarea type="text" name="address" id="address" class="input-box">{{ $profile->data->address ?? '' }}</textarea>
                 </div>
-            </div>
-
-            <div class="shadow rounded bg-white px-4 pt-6 pb-8">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-medium text-gray-800 text-lg">Shipping address</h3>
-                    <a href="#" class="text-primary">Edit</a>
+                <div>
+                    <label for="city" class="text-gray-600">City</label>
+                    <input type="text" name="city" id="city" class="input-box"
+                        value="{{ $profile->data->city ?? '' }}">
                 </div>
-                <div class="space-y-1">
-                    <h4 class="text-gray-700 font-medium">John Doe</h4>
-                    <p class="text-gray-800">Medan, North Sumatera</p>
-                    <p class="text-gray-800">20371</p>
-                    <p class="text-gray-800">0811 8877 988</p>
+                <div>
+                    <label for="postal_code" class="text-gray-600">Postal Code</label>
+                    <input type="text" name="postal_code" id="postal_code" class="input-box"
+                        value="{{ $profile->data->postal_code ?? '' }}">
                 </div>
-            </div>
-
-            <div class="shadow rounded bg-white px-4 pt-6 pb-8">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-medium text-gray-800 text-lg">Billing address</h3>
-                    <a href="#" class="text-primary">Edit</a>
+                <div>
+                    <label for="phone" class="text-gray-600">Phone Number</label>
+                    <input type="text" name="phone" id="phone" class="input-box"
+                        value="{{ $profile->data->phone ?? '' }}">
                 </div>
-                <div class="space-y-1">
-                    <h4 class="text-gray-700 font-medium">John Doe</h4>
-                    <p class="text-gray-800">Medan, North Sumatera</p>
-                    <p class="text-gray-800">20317</p>
-                    <p class="text-gray-800">0811 8877 988</p>
+                <div>
+                    <label for="email" class="text-gray-600">Email address</label>
+                    <input type="email" name="email" id="email" class="input-box"
+                        value="{{ $profile->data->user->email ?? '' }}">
                 </div>
             </div>
 
