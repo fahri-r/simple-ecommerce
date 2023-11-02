@@ -20,20 +20,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::apiResource('products', ProductController::class);
-Route::apiResource('profile.orders', OrderController::class);
-Route::apiResource('profile.orders.payments', PaymentController::class);
+Route::prefix('v1')->group(function () {
 
-Route::prefix('auth')->group(function () {
-    Route::post('/register', [AuthController::class, 'register'])->name("auth.register");
-    Route::post('/login', [AuthController::class, 'login'])->name("auth.login");
-});
+    Route::prefix('auth')->group(function () {
+        Route::post('/register', [AuthController::class, 'register'])->name("auth.register");
+        Route::post('/login', [AuthController::class, 'login'])->name("auth.login");
+    });
 
-Route::middleware('auth:api')->group(function () {
-    Route::get('profile', [ProfileController::class, 'index']);
-    Route::apiResource('profile.carts', CartController::class);
+    Route::apiResource('products', ProductController::class)->only(['index', 'show']);
+
+    Route::middleware('auth:api')->group(function () {
+        Route::apiResource('profile.orders', OrderController::class)->only(['index', 'show']);
+        Route::apiResource('profile.orders.payments', PaymentController::class)->only(['index', 'show', 'update']);
+
+        Route::get('profile', [ProfileController::class, 'index'])->only(['index', 'show', 'update', 'destroy']);
+        Route::apiResource('profile.carts', CartController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
+
+        Route::middleware('role:admin')->group(function () {
+            Route::apiResource('products', ProductController::class)->only(['store', 'update', 'destroy']);
+            Route::apiResource('profile.orders', OrderController::class)->only(['store', 'update', 'destroy']);
+            Route::apiResource('profile.orders.payments', PaymentController::class)->only(['destroy']);
+        });
+    });
 });
