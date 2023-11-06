@@ -21,6 +21,10 @@ class LoginController extends Controller
         ];
         $request = Request::create('/api/v1/auth/login', 'POST', $body);
         $response = Route::dispatch($request);
+        if ($response->getStatusCode() != 200) {
+            return redirect()->back()->with('errors', 'Login failed');
+        }
+
         $response_body = json_decode($response->getContent(), true);
 
         return redirect()->route('home.index')

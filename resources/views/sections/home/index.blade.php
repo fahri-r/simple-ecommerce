@@ -220,7 +220,26 @@
                     'product_id': id,
                     'quantity': 1
                 }, config)
-                .then((response) => {})
+                .then((response) => {
+                    
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                    Toast.fire({
+                        icon: "success",
+                        title: "Product added to cart"
+                    });
+
+                })
                 .catch((err) => {
                     window.location.href = "{{ route('login.index') }}";
                 })

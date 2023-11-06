@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::resource('/profile', ProfileController::class)->only(['index', 'update']);
 Route::resource('products', ProductController::class)->only(['index', 'show']);
 Route::resource('carts', CartController::class)->only(['index']);
 Route::resource('profile.orders', OrderController::class)->only(['index']);

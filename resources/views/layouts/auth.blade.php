@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ecommerce Tailwind</title>
 
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon/favicon.ico')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon/favicon.ico') }}" type="image/x-icon">
 
     <!-- <link rel="stylesheet" href="/resources/css/main.css"> -->
 
@@ -20,7 +20,7 @@
     @vite('../../node_modules/@fortawesome/fontawesome-free/css/all.min.css')
     @vite('resources/css/app.css')
     @vite('resources/css/main.css')
-    @vite("resources/js/app.js")
+    @vite('resources/js/app.js')
 </head>
 
 <body>
@@ -28,6 +28,7 @@
     @yield('content')
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @yield('script')
 </body>
 

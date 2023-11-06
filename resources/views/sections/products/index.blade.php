@@ -47,7 +47,7 @@
                             <div
                                 class="absolute inset-0 bg-black bg-opacity-40 flex items-center 
                     justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
-                                <a href="#"
+                                <a href="{{ route('products.show', $p->id) }}"
                                     class="text-white text-lg w-9 h-8 rounded-full bg-primary flex items-center justify-center hover:bg-gray-800 transition"
                                     title="view product">
                                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -61,7 +61,8 @@
                         </div>
                         <div class="pt-4 pb-3 px-4">
                             <a href="#">
-                                <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition line-clamp-1">
+                                <h4
+                                    class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition line-clamp-1">
                                     {{ $p->name }}</h4>
                             </a>
                             <div class="flex items-baseline mb-1 space-x-2">
@@ -78,9 +79,9 @@
                                 <div class="text-xs text-gray-500 ml-3">(150)</div>
                             </div>
                         </div>
-                        <a href="#"
+                        <button onclick="storeCart({{ $p->id }})"
                             class="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition">Add
-                            to cart</a>
+                            to cart</button>
                     </div>
                 @endforeach
             </div>
@@ -89,4 +90,46 @@
         <!-- ./products -->
     </div>
     <!-- ./shop wrapper -->
+@endsection
+
+@section('script')
+    <script>
+        const username = getCookie('username');
+        const token = `Bearer ${getCookie('token')}`
+        const config = {
+            'headers': {
+                'Authorization': token,
+            }
+        }
+
+        function storeCart(id) {
+            axios.post(`/api/v1/profile/${username}/carts`, {
+                    'product_id': id,
+                    'quantity': 1
+                }, config)
+                .then((response) => {
+
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                    Toast.fire({
+                        icon: "success",
+                        title: "Product added to cart"
+                    });
+
+                })
+                .catch((err) => {
+                    window.location.href = "{{ route('login.index') }}";
+                })
+        };
+    </script>
 @endsection

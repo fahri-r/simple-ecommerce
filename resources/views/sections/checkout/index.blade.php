@@ -21,37 +21,37 @@
                     <div>
                         <label for="first_name" class="text-gray-600">First Name <span class="text-primary">*</span></label>
                         <input type="text" name="first_name" id="first_name" class="input-box"
-                            value="{{ $profile->data->first_name ?? '' }}">
+                            value="{{ $profile->data->first_name ?? '' }}" readonly>
                     </div>
                     <div>
                         <label for="last_name" class="text-gray-600">Last Name <span class="text-primary">*</span></label>
                         <input type="text" name="last_name" id="last_name" class="input-box"
-                            value="{{ $profile->data->last_name ?? '' }}">
+                            value="{{ $profile->data->last_name ?? '' }}" readonly>
                     </div>
                 </div>
                 <div>
                     <label for="address" class="text-gray-600">Address</label>
-                    <textarea type="text" name="address" id="address" class="input-box">{{ $profile->data->address ?? '' }}</textarea>
+                    <textarea type="text" name="address" id="address" class="input-box" readonly>{{ $profile->data->address ?? '' }}</textarea>
                 </div>
                 <div>
                     <label for="city" class="text-gray-600">City</label>
                     <input type="text" name="city" id="city" class="input-box"
-                        value="{{ $profile->data->city ?? '' }}">
+                        value="{{ $profile->data->city ?? '' }}" readonly>
                 </div>
                 <div>
                     <label for="postal_code" class="text-gray-600">Postal Code</label>
                     <input type="text" name="postal_code" id="postal_code" class="input-box"
-                        value="{{ $profile->data->postal_code ?? '' }}">
+                        value="{{ $profile->data->postal_code ?? '' }}" readonly>
                 </div>
                 <div>
                     <label for="phone" class="text-gray-600">Phone Number</label>
                     <input type="text" name="phone" id="phone" class="input-box"
-                        value="{{ $profile->data->phone ?? '' }}">
+                        value="{{ $profile->data->phone ?? '' }}" readonly>
                 </div>
                 <div>
                     <label for="email" class="text-gray-600">Email address</label>
                     <input type="email" name="email" id="email" class="input-box"
-                        value="{{ $profile->data->user->email ?? '' }}">
+                        value="{{ $profile->data->user->email ?? '' }}" readonly>
                 </div>
             </div>
 
@@ -62,19 +62,22 @@
             <div class="space-y-2">
                 <?php $sum_price = 0; ?>
                 @if (isset($carts->data))
-                    @foreach ($carts->data as $c)
-                        <div class="flex justify-between">
-                            <div>
+                    <div class="flex flex-wrap justify-between items-center gap-y-2">
+                        @foreach ($carts->data as $c)
+                            <div class="basis-1/6">
+                                <h5 class="text-gray-800 font-medium">#{{ $c->product->id }}</h5>
+                            </div>
+                            <div class="basis-2/6">
                                 <h5 class="text-gray-800 font-medium line-clamp-1">{{ $c->product->name }}</h5>
                             </div>
-                            <input class="text-gray-600 w-20 h-8" type="number" id="quantity-{{ $c->id }}"
-                                value="{{ $c->quantity }}"
+                            <input class="text-gray-600 w-20 h-8 rounded-md basis-1/6" type="number"
+                                id="quantity-{{ $c->id }}" value="{{ $c->quantity }}"
                                 onchange="updateQuantity({{ $c->id }}, {{ $c->product->id }})">
-                            <p class="text-gray-800 font-medium" id="total-item-price-{{ $c->id }}">
+                            <p class="text-gray-800 font-medium basis-1/6" id="total-item-price-{{ $c->id }}">
                                 ${{ $c->quantity * $c->product->price }}</p>
-                        </div>
-                        <?php $sum_price += $c->quantity * $c->product->price; ?>
-                    @endforeach
+                        @endforeach
+                    </div>
+                    <?php $sum_price += $c->quantity * $c->product->price; ?>
                 @endif
             </div>
 
@@ -131,6 +134,16 @@
                     document.getElementById(`total-item-price-${id}`).innerHTML = `$${total_price}`;
                 });
         };
+    </script>
+
+    <script>
+        let username = getCookie('username');
+        let token = `Bearer ${getCookie('token')}`;
+        let config = {
+            'headers': {
+                'Authorization': token,
+            }
+        };
 
         function storeOrder() {
             axios.post(`/api/v1/profile/${username}/orders`, {}, config)
@@ -138,7 +151,23 @@
                     console.log(response);
                 })
                 .catch((err) => {
-                    window.location.href = "{{ route('login.index') }}"\;
+                    window.location.href = "{{ route('login.index') }}";
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                    Toast.fire({
+                        icon: "success",
+                        title: "Order has been created"
+                    });
                 });
         };
     </script>

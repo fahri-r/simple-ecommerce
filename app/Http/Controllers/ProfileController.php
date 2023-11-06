@@ -26,4 +26,31 @@ class ProfileController extends Controller
             'profile' => $profile
         ]);
     }
+
+    public function update(Request $request, $username)
+    {
+        $username = $request->cookie('username');
+        $token = "Bearer {$request->cookie('token')}";
+
+        $body = [
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'address' => $request->address,
+            'city' => $request->city,
+            'postal_code' => $request->postal_code,
+            'phone' => $request->phone,
+        ];
+
+        $r = Request::create("/api/v1/profile/{$username}", 'PUT', $body);
+        $r->headers->add(['Authorization' => $token]);
+
+        $res = app()->handle($r);
+
+        if ($res->getStatusCode() != 200) {
+            return redirect()->back()->with('error', 'Failed to update the profile');
+        }
+
+
+        return redirect()->back()->with('success', 'Update profile succeed');
+    }
 }

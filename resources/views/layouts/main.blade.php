@@ -57,6 +57,7 @@
             document.getElementById(`account`).innerHTML = getCookie('username') ?? 'Account';
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @yield('script')
 </body>
 
