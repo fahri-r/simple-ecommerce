@@ -104,18 +104,17 @@
         <div class="col-span-9 grid grid-cols-3 gap-4">
             @if (isset($orders->data))
                 @foreach ($orders->data as $o)
-                    <div class="shadow rounded bg-white px-4 pt-6 pb-8">
+                    <div class="shadow rounded bg-white px-4 pt-6 pb-8 flex flex-col justify-between">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="font-medium text-gray-800 text-lg">Order#{{ $o->id }}</h3>
-                            <a href="#" class="text-primary">Edit</a>
+                            <button onclick="downloadInvoice('{{ $o->id }}')" class="text-primary">Invoice</button>
                         </div>
-                        <div class="space-y-1">
-                            <h4 class="text-gray-700 font-medium">John Doe</h4>
-                            @foreach($o->details as $d)
-                            <p class="text-gray-800">example@mail.com</p>
+                        <ul class="list-disc list-inside">
+                            @foreach ($o->details as $d)
+                                <li class="text-gray-800 " id="product-{{ $d->id }}"></li>
                             @endforeach
-                            <p class="text-gray-800">0811 8877 988</p>
-                        </div>
+                        </ul>
+                        <p class="text-gray-800">${{ $o->price_total }}</p>
                     </div>
                 @endforeach
             @endif
@@ -132,5 +131,49 @@
         let url = '{{ route('profile.orders.index', ':username') }}';
         url = url.replace(':username', username);
         document.getElementById('order-history').href = url;
+
+        $(document).ready(function() {
+            for (let elem of document.querySelectorAll("[id^=product]")) {
+                fetchProduct(elem.id.split('-')[1]);
+            }
+        });
+
+        const fetchProduct = async (id) => {
+            const response = await axios.get(
+                `/api/v1/products/${id}`
+            );
+            document.getElementById(`product-${id}`).innerHTML = response.data.data.name;
+        };
+
+
+        let token = `Bearer ${getCookie('token')}`;
+        let config = {
+            responseType: 'blob',
+            'headers': {
+                'Authorization': token,
+            }
+        };
+
+        function downloadInvoice(id) {
+            axios.get(`/api/v1/profile/${username}/orders/${id}/invoice`, config)
+                .then((response) => {
+                    console.log(response.data)
+                    const blob = new Blob([response.data], {
+                        type: 'application/pdf;'
+                    });
+                    const href = URL.createObjectURL(blob);
+
+                    // create "a" HTML element with href to file & click
+                    const link = document.createElement('a');
+                    link.href = href;
+                    link.setAttribute('download', 'invoice.pdf'); //or any other extension
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // clean up "a" element & remove ObjectURL
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(href);
+                });
+        };
     </script>
 @endsection

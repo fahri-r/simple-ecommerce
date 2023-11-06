@@ -9,6 +9,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Profile;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use stdClass;
 
@@ -184,5 +185,19 @@ class OrderController extends Controller
             "message" => "Product deleted successfully.",
             "data" => new OrderResource($data)
         ]);
+    }
+
+
+    public function invoice($profile, $order)
+    {
+        $order = Order::with('details', 'details.product', 'payment', 'buyer', 'buyer.user')
+            ->whereHas('buyer', function ($p) use ($profile) {
+                $p->whereHas('user', function ($user) use ($profile) {
+                    $user->where('username', $profile);
+                });
+            })
+            ->where('id', $order)->first();
+        $pdf = Pdf::setOptions(['isRemoteEnabled' => true])->loadView('sections.orders.invoice', ['order' => $order]);
+        return $pdf->download('invoice.pdf');
     }
 }

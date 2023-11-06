@@ -77,4 +77,23 @@ class OrderController extends Controller
     {
         //
     }
+
+    public function invoice(Request $request, $id)
+    {
+
+        $username = $request->cookie('username');
+        $token = "Bearer {$request->cookie('token')}";
+
+        $r = Request::create("/api/v1/profile/{$username}/orders/{$id}/invoice", 'GET');
+        $r->headers->add(['Authorization' => $token]);
+
+        $res = app()->handle($r);
+        $orders = json_decode($res->getContent());
+
+        $headers = [
+            'Content-Type' => 'application/pdf',
+        ];
+
+        return response()->download($res->getContent(), 'filename.pdf', $headers);
+    }
 }

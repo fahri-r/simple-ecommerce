@@ -1,6 +1,6 @@
 <header class="py-4 shadow-sm bg-white">
     <div class="container flex items-center justify-between">
-        <a href="index.html">
+        <a href="{{ route('home.index') }}">
             <img src="{{ asset('assets/images/logo.svg') }}" alt="Logo" class="w-32">
         </a>
 

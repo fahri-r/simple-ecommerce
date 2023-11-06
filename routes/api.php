@@ -39,6 +39,7 @@ Route::prefix('v1')->as('api.')->group(function () {
 
         Route::resource('profile', ProfileController::class)->only(['index', 'show', 'update', 'destroy']);
         Route::apiResource('profile.carts', CartController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
+        Route::get('/profile/{profile}/orders/{order}/invoice', [OrderController::class, 'invoice'])->name('profile.orders.invoice');
 
         Route::middleware('role:admin')->group(function () {
             Route::apiResource('products', ProductController::class)->only(['store', 'update', 'destroy']);

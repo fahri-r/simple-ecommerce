@@ -25,5 +25,6 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index
 Route::resource('products', ProductController::class)->only(['index', 'show']);
 Route::resource('carts', CartController::class)->only(['index']);
 Route::resource('profile.orders', OrderController::class)->only(['index']);
+Route::get('/profile/{profile}/orders/{orders}/invoice', [OrderController::class, 'invoice'])->name('profile.orders.invoice');
 Route::resource('login', LoginController::class)->only(['index', 'store']);
 Route::resource('register', RegisterController::class)->only(['index', 'store']);
