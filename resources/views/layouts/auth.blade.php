@@ -17,7 +17,7 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
         rel="stylesheet">
 
-    @vite('../../node_modules/@fortawesome/fontawesome-free/css/all.min.css')
+    @vite('resources/css/all.min.css')
     @vite('resources/css/app.css')
     @vite('resources/css/main.css')
     @vite('resources/js/app.js')
