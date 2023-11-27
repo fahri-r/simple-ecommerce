@@ -134,16 +134,7 @@
                     document.getElementById(`total-item-price-${id}`).innerHTML = `$${total_price}`;
                 });
         };
-    </script>
 
-    <script>
-        let username = getCookie('username');
-        let token = `Bearer ${getCookie('token')}`;
-        let config = {
-            'headers': {
-                'Authorization': token,
-            }
-        };
 
         function storeOrder() {
             axios.post(`/api/v1/profile/${username}/orders`, {}, config)
