@@ -61,7 +61,7 @@
             <h4 class="text-gray-800 text-lg mb-4 font-medium uppercase">order summary</h4>
             <div class="space-y-2">
                 <?php $sum_price = 0; ?>
-                @if (isset($carts->data))
+                @if (isset($carts->data) && count($carts->data) > 0)
                     <div class="flex flex-wrap justify-between items-center gap-y-2">
                         @foreach ($carts->data as $c)
                             <div class="basis-1/6">
@@ -80,11 +80,6 @@
                     <?php $sum_price += $c->quantity * $c->product->price; ?>
                 @endif
             </div>
-
-            {{-- <div class="flex justify-between border-b border-gray-200 mt-1 text-gray-800 font-medium py-3 uppercas">
-                <p>subtotal</p>
-                <p>$1280</p>
-            </div> --}}
 
             <div class="flex justify-between border-b border-gray-200 mt-1 text-gray-800 font-medium py-3 uppercas">
                 <p>Shipping</p>
@@ -129,7 +124,6 @@
                     'quantity': qty
                 }, config)
                 .then((response) => {
-                    console.log(response);
                     let total_price = response.data.data.quantity * response.data.data.product.price;
                     document.getElementById(`total-item-price-${id}`).innerHTML = `$${total_price}`;
                 });
@@ -139,11 +133,6 @@
         function storeOrder() {
             axios.post(`/api/v1/profile/${username}/orders`, {}, config)
                 .then((response) => {
-                    console.log(response);
-                })
-                .catch((err) => {
-                    window.location.href = "{{ route('login.index') }}";
-
                     const Toast = Swal.mixin({
                         toast: true,
                         position: "top-end",
@@ -159,6 +148,11 @@
                         icon: "success",
                         title: "Order has been created"
                     });
+                    window.location.href =
+                        `/profile/${username}/orders/${response.data.data.id}/payments/${response.data.data.payment.id}`;
+                })
+                .catch((err) => {
+                    window.location.href = "{{ route('login.index') }}";
                 });
         };
     </script>
