@@ -22,10 +22,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
-Route::resource('/profile', ProfileController::class)->only(['index', 'update']);
+Route::resource('profile', ProfileController::class)->only(['index', 'update']);
 Route::resource('products', ProductController::class)->only(['index', 'show']);
 Route::resource('carts', CartController::class)->only(['index']);
-Route::resource('profile.orders', OrderController::class)->only(['index']);
+Route::resource('profile.orders', OrderController::class)->only(['index', 'store']);
 Route::get('/profile/{profile}/orders/{orders}/invoice', [OrderController::class, 'invoice'])->name('profile.orders.invoice');
 Route::get('/profile/{profile}/orders/{orders}/payments/{payments}', [PaymentController::class, 'edit'])->name('profile.orders.payments.edit');
 Route::put('/profile/{profile}/orders/{orders}/payments/{payments}', [PaymentController::class, 'update'])->name('profile.orders.payments.update');

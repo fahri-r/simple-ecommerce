@@ -125,8 +125,8 @@
                                 Invoice # {{ $order->payment->id }}<br />
                                 Created: {{ date_format($order->payment->created_at, 'F j, Y') }}
                             </td>
-                            <td style="{{ $order->payment->payment_status ? 'color:green' : 'color:red' }}">
-                                {{ $order->payment->payment_status ? 'PAID' : 'UNPAID' }}</td>
+                            <td style="{{ $order->payment->paid_status ? 'color:green' : 'color:red' }}">
+                                {{ $order->payment->paid_status ? 'PAID' : 'UNPAID' }}</td>
                         </tr>
                     </table>
                 </td>

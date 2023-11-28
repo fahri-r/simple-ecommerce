@@ -97,10 +97,16 @@
                 <label for="aggrement" class="text-gray-600 ml-3 cursor-pointer text-sm">I agree to the <a href="#"
                         class="text-primary">terms & conditions</a></label>
             </div>
-
-            <button onclick="storeOrder()"
-                class="block w-full py-3 px-4 text-center text-white bg-primary border border-primary rounded-md hover:bg-transparent hover:text-primary transition font-medium">Place
-                order</button>
+            <form
+                action="{{ route('profile.orders.store', [
+                    'profile' => $profile->data->user->username,
+                ]) }}"
+                method="POST" autocomplete="off">
+                @csrf
+                <button
+                    class="block w-full py-3 px-4 text-center text-white bg-primary border border-primary rounded-md hover:bg-transparent hover:text-primary transition font-medium">Place
+                    order</button>
+            </form>
         </div>
 
     </div>
@@ -126,33 +132,6 @@
                 .then((response) => {
                     let total_price = response.data.data.quantity * response.data.data.product.price;
                     document.getElementById(`total-item-price-${id}`).innerHTML = `$${total_price}`;
-                });
-        };
-
-
-        function storeOrder() {
-            axios.post(`/api/v1/profile/${username}/orders`, {}, config)
-                .then((response) => {
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                    });
-                    Toast.fire({
-                        icon: "success",
-                        title: "Order has been created"
-                    });
-                    window.location.href =
-                        `/profile/${username}/orders/${response.data.data.id}/payments/${response.data.data.payment.id}`;
-                })
-                .catch((err) => {
-                    window.location.href = "{{ route('login.index') }}";
                 });
         };
     </script>

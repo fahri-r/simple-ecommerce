@@ -43,7 +43,27 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $username = $request->cookie('username');
+        $token = "Bearer {$request->cookie('token')}";
+
+        $body = [];
+
+        $r = Request::create("/api/v1/profile/{$username}/orders", 'POST', $body);
+        $r->headers->add(['Authorization' => $token]);
+
+        $res = app()->handle($r);
+        $order = json_decode($res->getContent());
+
+        if ($res->getStatusCode() != 201) {
+            return redirect()->route('home.index')->with('errors', 'Failed to create order');
+        }
+
+        return redirect()->route('profile.orders.payments.edit', [
+            'profile' => $username,
+            'orders' => $order->data->id,
+            'payments' => $order->data->payment->id
+        ])
+            ->with('success', 'Create order successfully');
     }
 
     /**
